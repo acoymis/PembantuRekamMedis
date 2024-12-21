@@ -21,40 +21,55 @@
 </head>
 <body>
 
-  <div class="checklist">
-    <label>
-      <input type="checkbox" id="feverCheckbox"> Fever
-    </label><br>
-    <label>
-      <input type="checkbox" id="headacheCheckbox"> Headache
-    </label><br>
-    <!-- Additional checkboxes if needed -->
+  <div class="checklist" id="checklistContainer">
+    <!-- Checkboxes will be dynamically loaded here -->
   </div>
 
   <div class="output" id="summary"></div>
 
-  <script>
+  <script type="module">
+    import { checklistConfig } from './checklistConfig.js';
+
+    const checklistContainer = document.getElementById('checklistContainer');
     const summary = document.getElementById('summary');
-    const feverCheckbox = document.getElementById('feverCheckbox');
-    const headacheCheckbox = document.getElementById('headacheCheckbox');
-    
+
+    function createCheckbox({ id, label }) {
+      const checkboxWrapper = document.createElement('label');
+      checkboxWrapper.innerHTML = `
+        <input type="checkbox" id="${id}"> ${label}
+      `;
+      return checkboxWrapper;
+    }
+
     function updateSummary() {
       let statements = [];
 
-      if (feverCheckbox.checked) {
-        statements.push("Patient has fever.");
-      }
-      if (headacheCheckbox.checked) {
-        statements.push("Patient complains of headache.");
-      }
+      checklistConfig.forEach(({ id, text }) => {
+        const checkbox = document.getElementById(id);
+        if (checkbox && checkbox.checked) {
+          statements.push(text);
+        }
+      });
 
-      summary.innerText = statements.join(" ");
+      summary.innerText = statements.join(' ');
     }
 
-    feverCheckbox.addEventListener('change', updateSummary);
-    headacheCheckbox.addEventListener('change', updateSummary);
+    // Dynamically create checkboxes
+    checklistConfig.forEach(config => {
+      const checkboxElement = createCheckbox(config);
+      checklistContainer.appendChild(checkboxElement);
+      checklistContainer.appendChild(document.createElement('br'));
+    });
 
-    // Optionally, update once at the start:
+    // Attach event listeners
+    checklistConfig.forEach(({ id }) => {
+      const checkbox = document.getElementById(id);
+      if (checkbox) {
+        checkbox.addEventListener('change', updateSummary);
+      }
+    });
+
+    // Initial update
     updateSummary();
   </script>
 
