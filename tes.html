@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Medical Documentation</title>
   <style>
-    body { font-family: Arial, sans-serif; }
-    .checklist { margin-bottom: 1em; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .checklist {
+      margin-bottom: 1em;
+    }
     .output {
       border: 1px solid #ccc;
-      padding: 0.5em;
+      padding: 1em;
       width: 300px;
       min-height: 100px;
     }
   </style>
 </head>
 <body>
+
   <div class="checklist">
-    <label><input type="checkbox" id="feverCheckbox"> Fever</label><br>
-    <label><input type="checkbox" id="headacheCheckbox"> Headache</label><br>
+    <label>
+      <input type="checkbox" id="feverCheckbox"> Fever
+    </label><br>
+    <label>
+      <input type="checkbox" id="headacheCheckbox"> Headache
+    </label><br>
+    <!-- Additional checkboxes if needed -->
   </div>
+
   <div class="output" id="summary"></div>
 
   <script>
     const summary = document.getElementById('summary');
     const feverCheckbox = document.getElementById('feverCheckbox');
     const headacheCheckbox = document.getElementById('headacheCheckbox');
-
-    // Update text output whenever a checkbox changes
+    
     function updateSummary() {
       let statements = [];
 
@@ -41,6 +53,10 @@
 
     feverCheckbox.addEventListener('change', updateSummary);
     headacheCheckbox.addEventListener('change', updateSummary);
+
+    // Optionally, update once at the start:
+    updateSummary();
   </script>
+
 </body>
 </html>
